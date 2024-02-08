@@ -1,36 +1,33 @@
 package servicios.uno.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "movies")
+public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", columnDefinition = "VARCHAR(50) NOT NULL")
+    @Column(name = "name", columnDefinition = "VARCHAR(100) NOT NULL")
     private String name;
 
-    @Column(name = "description", columnDefinition = "VARCHAR(100) NOT NULL")
-    private String description;
+    @Column(name = "duration", columnDefinition = "VARCHAR(15) NOT NULL")
+    private String duration;
+
+    @ManyToOne
+    private Category category;
 
     @Column(name = "status", columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    private List<Movie> movies;
-
-    public Category() {
+    public Movie() {
     }
 
-    public Category(String name, String description, boolean status) {
+    public Movie(String name, String duration, Category category, boolean status) {
         this.name = name;
-        this.description = description;
+        this.duration = duration;
+        this.category = category;
         this.status = status;
     }
 
@@ -50,12 +47,20 @@ public class Category {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public boolean isStatus() {
@@ -65,5 +70,4 @@ public class Category {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
 }

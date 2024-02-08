@@ -10,6 +10,7 @@ import servicios.uno.repository.CategoryRepository;
 import servicios.uno.utils.Message;
 import servicios.uno.utils.TypesResponse;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 @Service
@@ -23,14 +24,18 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional(readOnly = true)
     public ResponseEntity<Object> findAll() {
         return new ResponseEntity<>(new Message(categoryRepository.findAll(), "Listado de categorias", TypesResponse.SUCCESS), HttpStatus.OK);
     }
+
+    @Transactional(readOnly = true)
 
     public ResponseEntity<Object> findById(Long id) {
         return new ResponseEntity<>(new Message(categoryRepository.findById(id), "Categoria encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<Object> save(Category category) {
 
         if (categoryRepository.existsByName(category.getName())) {
@@ -42,6 +47,8 @@ public class CategoryService {
         return new ResponseEntity<>(new Message(categoryRepository.saveAndFlush(category), "Categoria guardada", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
+
+    @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<Object> update(Category category) {
         Optional<Category> optionalCategory = categoryRepository.findById(category.getId());
 
@@ -59,6 +66,8 @@ public class CategoryService {
         return new ResponseEntity<>(new Message(category1, "Categoria actualizada", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
+
+    @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<Object> changeStatus(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 
