@@ -83,7 +83,6 @@ public class MovieService {
         movie1.setName(movie.getName());
         movie1.setCategory(movie.getCategory());
         movie1.setDuration(movie.getDuration());
-        movie1.setStatus(movie.isStatus());
         movie1.setDirector(movie.getDirector());
 
         movieRepository.saveAndFlush(movie1);
