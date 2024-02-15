@@ -39,9 +39,23 @@ public class MovieController {
     }
 
     @PutMapping("/status/{id}")
-
     public ResponseEntity<Object> changeStatus(@PathVariable("id") Long id) {
         return service.changeStatus(id);
+    }
+
+    @PostMapping("/name/")
+    public ResponseEntity<Object> findByName(@RequestBody Movie movie) {
+        return service.findByName(movie);
+    }
+
+    @PostMapping("/director/")
+    public ResponseEntity<Object> findByDirector(@RequestBody Movie movie) {
+        return service.findByDirector(movie);
+    }
+
+    @PostMapping("/category/")
+    public ResponseEntity<Object> findByCategory(@RequestBody Movie movie) {
+        return service.findByCategory(movie);
     }
 
 

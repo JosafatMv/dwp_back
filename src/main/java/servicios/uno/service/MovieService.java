@@ -108,4 +108,39 @@ public class MovieService {
 
     }
 
+    @Transactional(readOnly = true)
+    public ResponseEntity<Object> findByName(Movie movie) {
+
+        if (movie.getName() == null || movie.getName().isEmpty()) {
+            return new ResponseEntity<>(new Message("El nombre de la película es requerido", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new Message(movieRepository.findByNameContaining(movie.getName()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<Object> findByDirector(Movie movie) {
+
+        if (movie.getDirector() == null || movie.getDirector().isEmpty()) {
+            return new ResponseEntity<>(new Message("El nombre del director es requerido", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new Message(movieRepository.findByDirectorContaining(movie.getDirector()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<Object> findByCategory(Movie movie) {
+
+        if (movie.getCategory() == null || movie.getCategory().getId() == null) {
+            return new ResponseEntity<>(new Message("La categoría es requerida", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Category> optionalCategory = categoryRepository.findById(movie.getCategory().getId());
+        if (optionalCategory.isEmpty()) {
+            return new ResponseEntity<>(new Message("Categoría no encontrada", TypesResponse.ERROR), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new Message(movieRepository.findByCategory(movie.getCategory()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
+    }
+
 }
