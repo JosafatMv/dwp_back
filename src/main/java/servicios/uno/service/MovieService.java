@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import servicios.uno.model.Category;
 import servicios.uno.model.Movie;
+import servicios.uno.model.MovieDto;
 import servicios.uno.repository.CategoryRepository;
 import servicios.uno.repository.MovieRepository;
 import servicios.uno.utils.Message;
@@ -105,7 +106,6 @@ public class MovieService {
         movieRepository.saveAndFlush(movie);
 
         return new ResponseEntity<>(new Message(movie, "Estado de la película cambiado", TypesResponse.SUCCESS), HttpStatus.OK);
-
     }
 
     @Transactional(readOnly = true)
@@ -143,4 +143,26 @@ public class MovieService {
         return new ResponseEntity<>(new Message(movieRepository.findByCategory(movie.getCategory()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
+    @Transactional(readOnly = true)
+    public ResponseEntity<Object> findPublicationDateBetweenDates(MovieDto movie) {
+
+        if (movie.getStartDate() == null || movie.getEndDate() == null) {
+            return new ResponseEntity<>(new Message("La fecha de inicio y la fecha fin son requeridas", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new Message(movieRepository.findByPublicationDateBetween(movie.getStartDate(), movie.getEndDate()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
+
+
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<Object> findByPublicationDateDesc(MovieDto movie) {
+
+        if (movie.getPublicationDate() == null) {
+            return new ResponseEntity<>(new Message("La fecha de publicación es requerida", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new Message(movieRepository.findByPublicationDateOrderByPublicationDate(movie.getPublicationDate()), "Película encontrada", TypesResponse.SUCCESS), HttpStatus.OK);
+
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import servicios.uno.model.Movie;
+import servicios.uno.model.MovieDto;
 import servicios.uno.service.MovieService;
 
 @RestController
@@ -57,6 +58,17 @@ public class MovieController {
     public ResponseEntity<Object> findByCategory(@RequestBody Movie movie) {
         return service.findByCategory(movie);
     }
+
+    @PostMapping("/publication-date-between/")
+    public ResponseEntity<Object> findByPublicationDateBetween(@RequestBody MovieDto movie) {
+        return service.findPublicationDateBetweenDates(movie);
+    }
+
+    @PostMapping("/publication-date/")
+    public ResponseEntity<Object> findByPublicationDate(@RequestBody MovieDto movie) {
+        return service.findByPublicationDateDesc(movie);
+    }
+
 
 
 }

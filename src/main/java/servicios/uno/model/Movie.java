@@ -2,6 +2,8 @@ package servicios.uno.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "movies")
 public class Movie {
@@ -21,18 +23,23 @@ public class Movie {
     @Column(name = "director", columnDefinition = "VARCHAR(100) NOT NULL")
     private String director;
 
+
+    @Column(name = "publication_date", columnDefinition = "DATE NOT NULL")
+    private Date publicationDate;
+
     @Column(name = "status", columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
     public Movie() {
     }
 
-    public Movie(String name, String duration, Category category, boolean status, String director) {
+    public Movie(String name, String duration, Category category, boolean status, String director, Date publicationDate) {
         this.name = name;
         this.duration = duration;
         this.category = category;
         this.status = status;
         this.director = director;
+        this.publicationDate = publicationDate;
     }
 
     public Long getId() {
@@ -82,4 +89,13 @@ public class Movie {
     public void setDirector(String director) {
         this.director = director;
     }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
 }
